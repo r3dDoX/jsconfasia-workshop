@@ -1,0 +1,215 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>02 Webassembly</title>
+
+    <link rel="icon" href="../img/zuehlke_logo.jpg">
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/zuehlke.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../lib/css/atom-one-dark.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match(/print-pdf/gi) ? '../css/print/pdf.css' : '../css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section class="deck-slide">
+            <h1>02 Webassembly</h1>
+        </section>
+        <section>
+            <h2>Webassembly = wasm</h2>
+        </section>
+        <section>
+            <h2>Browser Support?</h2>
+            <img src="../img/wasm-support.png" />
+        </section>
+        <section>
+            <section>
+                <h2>wasm basics</h2>
+                <ul>
+                    <li>Bytecode for the browser</li>
+                    <li>All major browser vendors agreed on format</li>
+                    <li>Browsers implement VM to run wasm in</li>
+                </ul>
+            </section>
+            <section>
+                <h2>What languages can be compiled to wasm?</h2>
+                <ul>
+                    <li class="fragment">Support is spreading</li>
+                    <li class="fragment">
+                        <a href="https://github.com/appcypher/awesome-wasm-langs" target="_blank">
+                            List of wasm languages
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h2>We'll be using</h2>
+                <ul>
+                    <li>C</li>
+                    <li>Rust</li>
+                    <li class="fragment">Don't worry no in-depth knowledge required</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Compilation example</h2>
+            </section>
+            <section>
+                <h2>C</h2>
+                <pre>
+                <code class="hljs c" data-trim contenteditable data-noescape>
+                    int factorial(int n) {
+                      if (n == 0)
+                        return 1;
+                      else
+                        return n * factorial(n - 1);
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Intermediate format</h2>
+                <pre>
+                <code class="hljs" data-trim contenteditable data-noescape>
+                    get_local 0
+                    i64.eqz
+                    if (result i64)
+                        i64.const 1
+                    else
+                        get_local 0
+                        get_local 0
+                        i64.const 1
+                        i64.sub
+                        call 0
+                        i64.mul
+                    end
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>wasm binary format</h2>
+                <pre>
+                <code class="hljs" data-trim contenteditable data-noescape>
+                    20 00
+                    50
+                    04 7E
+                    42 01
+                    05
+                    20 00
+                    20 00
+                    42 01
+                    7D
+                    10 00
+                    7E
+                    0B
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Text representation (s-expr)</h2>
+                <pre>
+                <code class="hljs scheme" data-trim contenteditable data-noescape>
+                    (module
+                      (import "math" "exp" (func $exp (param f64) (result f64)))
+                      (func (export "doubleExp") (param $0 f64) (result f64)
+                        (f64.mul
+                          (call $exp
+                            (get_local $0)
+                          )
+                          (f64.const 2)
+                        )
+                      )
+                    )
+                </code>
+                </pre>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Limitations</h2>
+            </section>
+            <section>
+                <h2>Memory</h2>
+                <ul>
+                    <li>Only flat linear memory support</li>
+                    <li class="fragment">No Garbage Collection except custom written</li>
+                    <li class="fragment">Work in progress</li>
+                </ul>
+            </section>
+            <section>
+                <h2>DOM</h2>
+                <ul>
+                    <li>No DOM access from within wasm</li>
+                    <li class="fragment">DOM API proposed for future version</li>
+                </ul>
+            </section>
+            <section>
+                <h2>GPU</h2>
+                <ul>
+                    <li>No GPU access</li>
+                    <li class="fragment">Not planned right now</li>
+                    <li class="fragment">So no blockchain mining in the browser :)</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Multi Threading</h2>
+                <ul>
+                    <li>Not in the MVP (current implementation)</li>
+                    <li class="fragment">One of the main goals</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <h2>Resources</h2>
+            <ul>
+                <li>
+                    <a href="https://github.com/webassembly" target="_blank">
+                        Webassembly on Github
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <section class="deck-slide">
+            <h1>Questions?</h1>
+        </section>
+    </div>
+</div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+
+<script>
+  // More info https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    history: true,
+
+    // More info https://github.com/hakimel/reveal.js#dependencies
+    dependencies: [
+      { src: '../plugin/markdown/marked.js' },
+      { src: '../plugin/markdown/markdown.js' },
+      { src: '../plugin/notes/notes.js', async: true },
+      {
+        src: '../plugin/highlight/highlight.js', async: true, callback: function () {
+          hljs.initHighlightingOnLoad();
+        }
+      }
+    ]
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>01 Introduction</title>
+
+    <link rel="icon" href="../img/zuehlke_logo.jpg">
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/zuehlke.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../lib/css/atom-one-dark.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match(/print-pdf/gi) ? '../css/print/pdf.css' : '../css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section class="deck-slide">
+            <h1>Introduction</h1>
+        </section>
+        <section>
+            <h2>Patrick Walther</h2>
+            <div class="column-container">
+                <div class="column-2">
+                    <img src="../img/me.jpeg" class="portrait">
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>Started programming back in 2005</li>
+                        <li>PHP/JS and later jQuery for IE 6...</li>
+                        <li>JavaScript enthusiast!</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>Zühlke</h2>
+            <div class="column-container">
+                <div class="column-2">
+                    <img src="../img/zuehlke_logo.jpg">
+                </div>
+                <div class="column-2">
+                    <ul>
+                        <li>Consulting Company</li>
+                        <li>Founded in Switzerland in 1968</li>
+                        <li>Operating in 8 countries</li>
+                        <li>Joined in 2013</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section>
+            <h2>Global Map</h2>
+            <p>tbd</p>
+        </section>
+        <section>
+            <h2>Our Goals</h2>
+            <ul>
+                <li>Basic understanding of Webassembly and its current limits</li>
+                <li>Understand how the communication between JS/Wasm works</li>
+                <li>Trying out fun stuff in Wasm!</li>
+            </ul>
+        </section>
+        <section>
+            <section>
+                <h2>Schedule</h2>
+                <ul>
+                    <li>tbd</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Course structure</h2>
+                <ul>
+                    <li>Theoretical input</li>
+                    <li>Exercises</li>
+                    <li>Questions at any time</li>
+                    <li>Discussions &amp; Feedback</li>
+                </ul>
+                <p>made with <a href="https://revealjs.com/#/" target="_blank">reveal.js</a></p>
+            </section>
+        </section>
+        <section>
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://revealjs.com/#/" target="_blank">reveal.js</a></li>
+                <li>tbd</li>
+            </ul>
+        </section>
+        <section class="deck-slide">
+            <h1>Questions?</h1>
+        </section>
+    </div>
+</div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+
+<script>
+  // More info https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    history: true,
+
+    // More info https://github.com/hakimel/reveal.js#dependencies
+    dependencies: [
+      { src: '../plugin/markdown/marked.js' },
+      { src: '../plugin/markdown/markdown.js' },
+      { src: '../plugin/notes/notes.js', async: true },
+      {
+        src: '../plugin/highlight/highlight.js', async: true, callback: function () {
+          hljs.initHighlightingOnLoad();
+        }
+      }
+    ]
+  });
+</script>
+</body>
+</html>
