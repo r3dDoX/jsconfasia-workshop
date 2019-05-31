@@ -168,18 +168,64 @@
             </section>
             <section>
                 <h2>Types</h2>
+                <img src="../img/types.png">
+            </section>
+            <section>
+                <h2>How do we exchange other types?</h2>
                 <ul>
-                    <li>
-                        Currently only a few numeric types you can exchange:
-                        <ul>
-                            <li>i32: 32-bit integer</li>
-                            <li>i64: 64-bit integer</li>
-                            <li>f32: 32-bit floating point</li>
-                            <li>f64: 64-bit floating point</li>
-                        </ul>
+                    <li class="fragment">Other types we have to pass the reference and read it
+                        directly from memory
                     </li>
-                    <li class="fragment">Other types we have to pass the reference and read it directly from memory</li>
+                    <li class="fragment">We'll see that later</li>
                 </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>What is coming?</h2>
+            </section>
+            <section>
+                <h2>Garbage Collection</h2>
+                <ul>
+                    <li>Currently not supported</li>
+                    <li>Languages with GC compile it themselves</li>
+                    <li>Bad for binary size and efficiency</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Host bindings</h2>
+                <ul>
+                    <li>Currently we have a very limited interface</li>
+                    <li>Add sharing of JS/DOM objects</li>
+                    <li>Create, call, manipulate and pass objects</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Threads</h2>
+                <ul>
+                    <li>Shared access to memory and atomic operations</li>
+                    <li>No mechanism for creating threads</li>
+                    <li>Supplied by the host which will be Web Workers</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Exception Handling</h2>
+                <ul>
+                    <li>No support so far</li>
+                    <li>Fairly challenging proposal (#2)</li>
+                    <li>Currently proposing a generic concept of events</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Reference Types</h2>
+                <ul>
+                    <li>Currently minimal set of types</li>
+                    <li>Serialize more complex types to memory</li>
+                    <li>New "anyref" type that allows references to JS objects</li>
+                </ul>
+            </section>
+            <section>
+                <h2>And so much more...</h2>
             </section>
         </section>
         <section>
@@ -188,6 +234,11 @@
                 <li>
                     <a href="https://github.com/webassembly" target="_blank">
                         Webassembly on Github
+                    </a>
+                </li>
+                <li>
+                    <a href="https://blog.scottlogic.com/2018/07/20/wasm-future.html">
+                        The future of WebAssembly by Colin Eberhardt
                     </a>
                 </li>
             </ul>
