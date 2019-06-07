@@ -100,7 +100,24 @@
                 </pre>
             </section>
             <section>
-                <h2>CString</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    format!("Hello {}!", "from Rust");
+                </code>
+                </pre>
+                <ul>
+                    <li>Rust Macro</li>
+                    <li>"!"</li>
+                    <li>More flexible than functions</li>
+                    <li>e.g. number of parameters</li>
+                </ul>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    CString::new(s).unwrap();
+                </code>
+                </pre>
                 <ul>
                     <li>C-Compatible String</li>
                     <li>nul-terminated</li>
@@ -114,7 +131,11 @@
                 </ul>
             </section>
             <section>
-                <h2>into_raw</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    s.into_raw()
+                </code>
+                </pre>
                 <ul>
                     <li>Convert to pointer</li>
                     <li>Hand off memory management</li>
@@ -201,11 +222,174 @@
             </section>
         </section>
         <section>
+            <section>
+                <h2>But how do we pass them into wasm?</h2>
+            </section>
+            <section>
+                <h2>wasm-bindgen</h2>
+                <ul>
+                    <li>Rust library</li>
+                    <li>Allow high-level interaction</li>
+                    <li>Polyfill for features like "host bindings"</li>
+                    <li class="fragment">Generate TypeScript bindings 😍</li>
+                </ul>
+            </section>
+            <section>
+                <h2>wasm-bindgen</h2>
+                <ul>
+                    <li>Not "pure" wasm anymore</li>
+                    <li>Needs bindings on JS and Rust side</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Importing and activating wasm_bindgen</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    #![feature(proc_macro, wasm_custom_section, wasm_import_module)]
+                    extern crate wasm_bindgen;
+                    use wasm_bindgen::prelude::*;
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Hello World! 😎</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    #[wasm_bindgen]
+                    pub fn greet(name: String) -> String {
+                        format!("Hello, {}!", name)
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Build Step</h2>
+                <ul>
+                    <li>We have to build JS bindings too</li>
+                    <li>Webassembly Studio will compile this</li>
+                    <li>We only have to include these in our HTML</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Build Step (current)</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    gulp.task("build", async () => {
+                        const options = { lto: true, opt_level: 's', debug: true };
+                        const data = await Service.compileFile(project.getFile("src/main.rs"), "rust", "wasm", options);
+                        const outWasm = project.newFile("out/main.wasm", "wasm", true);
+                        outWasm.setData(data);
+                    });
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Compile Step</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    Service.compileFile(project.getFile("src/main.rs"), "rust", "wasm", options);
+                </code>
+                </pre>
+                ⏬
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    Service.compileFileWithBindings(project.getFile("src/main.rs"), "rust", "wasm", options);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Result</h2>
+                <ul>
+                    <li>This will emit both: wasm code and JS-bindings</li>
+                    <li>Write them in two files instead of one</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Build Step (after)</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    gulp.task("build", async () => {
+                        const options = { lto: true, opt_level: 's', debug: true };
+                        const data = await Service.compileFileWithBindings(project.getFile("src/main.rs"), "rust", "wasm", options);
+
+                        const outWasm = project.newFile("out/main.wasm", "wasm", true);
+                        outWasm.setData(data.wasm);
+                        const outJs = project.newFile("out/main_bindings.js", "javascript", true);
+                        outJs.setData(data.wasmBindgenJs);
+                    });
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>HTML</h2>
+                <pre>
+                    <code class="hljs html" data-trim contenteditable data-noescape>
+                        &lt;body&gt;
+                          &lt;span id="container"&gt;&lt;/span&gt;
+                          &lt;script src="../out/main_bindings.js"&gt;&lt;/script&gt;
+                          &lt;script src="./main.js"&gt;&lt;/script&gt;
+                        &lt;/body&gt;
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Last but not least => JS</h2>
+                <pre>
+                    <code class="hljs js" data-trim contenteditable data-noescape>
+                        const { greet } = wasm_bindgen;
+
+                        function showGreeting() {
+                          const greeting = greet('JSConf Asia');
+                          document.getElementById("container").textContent = greeting;
+                        }
+
+                        wasm_bindgen('../out/main.wasm')
+                          .then(showGreeting)
+                          .catch(console.error);
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <pre>
+                    <code class="hljs js" data-trim contenteditable data-noescape>
+                        const { greet } = wasm_bindgen;
+                    </code>
+                </pre>
+                <ul>
+                    <li>wasm_bindgen is provided by main_bindings.js</li>
+                    <li>We will access wasm through this only now</li>
+                </ul>
+            </section>
+            <section>
+                <pre>
+                    <code class="hljs js" data-trim contenteditable data-noescape>
+                        wasm_bindgen('../out/main.wasm')
+                    </code>
+                </pre>
+                <ul>
+                    <li>Loading and compiling is now done by wasm_bindgen too</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Exercise Time!</h2>
+                <ul>
+                    <li>Try passing in Strings</li>
+                    <li>Incorporate wasm_bindgen</li>
+                    <li>Play around with it</li>
+                </ul>
+            </section>
+        </section>
+        <section>
             <h2>Resources</h2>
             <ul>
                 <li>
                     <a href="https://github.com/rustwasm/wasm-pack" target="_blank">
                         wasm-pack 📦
+                    </a>
+                </li>
+                <li>
+                    <a href="https://rustwasm.github.io/wasm-bindgen/introduction.html" target="_blank">
+                        wasm-bindgen 🔛
                     </a>
                 </li>
             </ul>
