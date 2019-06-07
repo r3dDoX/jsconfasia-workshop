@@ -388,6 +388,37 @@
             </section>
         </section>
         <section>
+            <section>
+                <h2>Can we call JS functions?</h2>
+            </section>
+            <section>
+                <h2>wasm-bindgen</h2>
+                <ul>
+                    <li>We declare external functions in Rust</li>
+                    <li>Bindgen will make them available to us</li>
+                    <li>From window object</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Extern block</h2>
+                <pre>
+                    <code class="hljs rust" data-trim contenteditable data-noescape>
+                        #[wasm_bindgen]
+                        extern {
+                            fn alert(s: String);
+                        }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Exercise Time!</h2>
+                <ul>
+                    <li>Create new Rust function that calls a JS function</li>
+                    <li>Import it in JS file and call when ready</li>
+                </ul>
+            </section>
+        </section>
+        <section>
             <h2>Resources</h2>
             <ul>
                 <li>
