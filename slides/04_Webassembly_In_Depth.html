@@ -226,11 +226,31 @@
                 <pre>
                 <code class="hljs rust" data-trim contenteditable data-noescape>
                     #[wasm_bindgen]
-                    pub fn greet(name: String) -> String {
+                    pub fn greet(name: &str) -> String {
                         format!("Hello, {}!", name)
                     }
                 </code>
                 </pre>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    fn greet(name: &str)
+                </code>
+                </pre>
+                <ul>
+                    <li>Behind the scenes there is <code>js_sys::JsString</code></li>
+                    <li>
+                        <a href="https://rustwasm.github.io/wasm-bindgen/reference/types/str.html#utf-16-vs-utf-8" target="_blank">
+                            JS (utf-16) to Rust (utf-8)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://mgattozzi.github.io/2016/05/26/how-do-i-str-string.html" target="_blank">
+                            Converting &str to String
+                        </a>
+                    </li>
+                </ul>
             </section>
             <section>
                 <h2>Build Step</h2>
@@ -252,6 +272,7 @@
                     });
                 </code>
                 </pre>
+                <p>build.ts</p>
             </section>
             <section>
                 <h2>Compile Step</h2>
@@ -351,7 +372,7 @@
         </section>
         <section>
             <section>
-                <h2>Can we call JS functions?</h2>
+                <h2>How to use it for passing in Strings?</h2>
             </section>
             <section>
                 <h2>wasm-bindgen</h2>
@@ -362,12 +383,29 @@
                 </ul>
             </section>
             <section>
-                <h2>Extern block</h2>
+                <h2>Extern block (window)</h2>
                 <pre>
                     <code class="hljs rust" data-trim contenteditable data-noescape>
                         #[wasm_bindgen]
                         extern {
-                            fn alert(s: String);
+                            fn alert(s: &str);
+                        }
+                    </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Extern block (more specific)</h2>
+                <pre>
+                    <code class="hljs rust" data-trim contenteditable data-noescape>
+                        #[wasm_bindgen]
+                        extern {
+                            fn alert(s: &str);
+
+                            #[wasm_bindgen(js_namespace = console)]
+                            fn log(s: &str);
+
+                            #[wasm_bindgen(js_namespace = console, js_name = log)]
+                            fn console_log_u32(n: u32);
                         }
                     </code>
                 </pre>
@@ -376,13 +414,17 @@
                 <h2>Exercise Time!</h2>
                 <ul>
                     <li>Create new Rust function that calls a JS function</li>
-                    <li>Import it in JS file and call when ready</li>
                 </ul>
             </section>
         </section>
         <section>
             <h2>Resources</h2>
             <ul>
+                <li>
+                    <a href="https://github.com/wasdk/WebAssemblyStudio" target="_blank">
+                        Webassembly Studio on Github
+                    </a>
+                </li>
                 <li>
                     <a href="https://github.com/rustwasm/wasm-pack" target="_blank">
                         wasm-pack 📦
