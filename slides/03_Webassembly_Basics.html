@@ -1,0 +1,286 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>03 Webassembly basics</title>
+
+    <link rel="icon" href="../img/zuehlke_logo.jpg">
+    <link rel="stylesheet" href="../css/reveal.css">
+    <link rel="stylesheet" href="../css/theme/zuehlke.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="../lib/css/atom-one-dark.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match(/print-pdf/gi) ? '../css/print/pdf.css' : '../css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section class="deck-slide">
+            <h1>03 Webassembly basics</h1>
+        </section>
+        <section>
+            <h2>Build & Run some code!</h2>
+        </section>
+        <section>
+            <section>
+                <h2>Declaring a function in Rust</h2>
+            </section>
+            <section>
+                <h2>Short Rust introduction</h2>
+            </section>
+            <section>
+                <h2>Basic callable function</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    pub extern "C" fn add_one(x: i32) -> i32 {
+                        x + 1
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    pub extern "C"
+                </code>
+                </pre>
+                <ul>
+                    <li>Public callable block</li>
+                    <li>We assume it will be called by a C compiled target</li>
+                </ul>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    fn add_one(x: i32) -> i32
+                </code>
+                </pre>
+                <ul>
+                    <li>Function declaration with name "add_one"</li>
+                    <li>One parameter which is a 32-bit integer</li>
+                    <li>Returning a 32-bit integer</li>
+                </ul>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    {
+                        x + 1
+                    }
+                </code>
+                </pre>
+                <ul>
+                    <li>No need for explicit return statement</li>
+                    <li>Last expression gets returned</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Webassembly Studio</h2>
+                <ul>
+                    <li>Online IDE</li>
+                    <li>No compiler installation</li>
+                    <li>Build & run in your browser 😍</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Try it out</h2>
+                <a href="https://webassembly.studio" target="_blank">
+                    https://webassembly.studio
+                </a>
+                <img src="../img/wasm-studio-empty-rust.png">
+            </section>
+            <section>
+                <h2>Check out the files</h2>
+                <ul>
+                    <li>main.html</li>
+                    <li>main.js</li>
+                    <li>main.rs</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Build & Run</h2>
+                <img src="../img/wasm-studio-toolbar.png">
+            </section>
+            <section>
+                <h2>Exercise Time</h2>
+                <a href="https://webassembly.studio" target="_blank">
+                    https://webassembly.studio
+                </a>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Instantiation</h2>
+            </section>
+            <section>
+                <h2>Webassembly.instantiate</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    fetch('../out/main.wasm')
+                        .then(response => response.arrayBuffer())
+                        .then(bytes => WebAssembly.instantiate(bytes))
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Webassembly.instantiateStreaming</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    WebAssembly
+                        .instantiateStreaming(fetch('../out/main.wasm'))
+                        .then(instance => /* do something */);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Webassembly.instantiateStreaming</h2>
+                <ul>
+                    <li>Better performance than instantiate</li>
+                    <li>No conversion to ArrayBuffer</li>
+                    <li>Fetch, compile and instantiate in one step</li>
+                    <li class="fragment">Not yet supported in <strong>Safari</strong></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Import Object</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    instantiate(sourceBuffer, importObject);
+                    instantiateStreaming(source, importObject);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Import Object</h2>
+                <ul>
+                    <li>Pass JS object to wasm</li>
+                    <li>Same amount of types as last example</li>
+                    <li>Call passed functions from wasm</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Call JS functions from Rust</h2>
+            </section>
+            <section>
+                <h2>JS</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    const importObject = {
+                        env: {
+                            logResult(result) {
+                                console.log(result);
+                            },
+                        }
+                    }
+                    ...
+                    WebAssembly.instantiate(bytes, importObject)
+                    ...
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>env property</h2>
+                <ul>
+                    <li>Rust expects to find "env" in the importObject</li>
+                    <li>This might vary between wasm languages</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Rust extern block</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    extern {
+                        fn logResult(i: i32);
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Rust call</h2>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    #[no_mangle]
+                    pub extern "C" fn add_one(x: i32) {
+                        unsafe {
+                            logResult(x + 1);
+                        }
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>unsafe</h2>
+                <ul>
+                    <li>Usually we only write safe Rust code</li>
+                    <li>Function is unknown at compile-time</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Exercise Time</h2>
+                <ul>
+                    <li>Define and call the logResult function</li>
+                </ul>
+                <a href="https://webassembly.studio" target="_blank">
+                    https://webassembly.studio
+                </a>
+            </section>
+        </section>
+        <section>
+            <h2>Resources</h2>
+            <ul>
+                <li>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly" target="_blank">
+                        Webassembly on MDN
+                    </a>
+                </li>
+                <li>
+                    <a href="https://webassembly.studio" target="_blank">
+                        Webassembly Studio
+                    </a>
+                </li>
+            </ul>
+        </section>
+        <section class="deck-slide">
+            <h1>Questions?</h1>
+        </section>
+    </div>
+</div>
+
+<script src="../lib/js/head.min.js"></script>
+<script src="../js/reveal.js"></script>
+
+<script>
+  // More info https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    history: true,
+
+    // More info https://github.com/hakimel/reveal.js#dependencies
+    dependencies: [
+      { src: '../plugin/markdown/marked.js' },
+      { src: '../plugin/markdown/markdown.js' },
+      { src: '../plugin/notes/notes.js', async: true },
+      {
+        src: '../plugin/highlight/highlight.js', async: true, callback: function () {
+          hljs.initHighlightingOnLoad();
+        }
+      }
+    ]
+  });
+</script>
+</body>
+</html>

@@ -31,48 +31,6 @@
         </section>
         <section>
             <section>
-                <h2>Instantiation</h2>
-            </section>
-            <section>
-                <h2>Webassembly.instantiate</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    fetch('../out/main.wasm')
-                        .then(response => response.arrayBuffer())
-                        .then(bytes => WebAssembly.instantiate(bytes))
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Webassembly.instantiateStreaming</h2>
-                <pre>
-                <code class="hljs js" data-trim contenteditable data-noescape>
-                    WebAssembly
-                        .instantiateStreaming(fetch('../out/main.wasm'))
-                        .then(instance => /* do something */);
-                </code>
-                </pre>
-            </section>
-            <section>
-                <h2>Webassembly.instantiateStreaming</h2>
-                <ul>
-                    <li>Better performance than instantiate</li>
-                    <li>No conversion to ArrayBuffer</li>
-                    <li>Fetch, compile and instantiate in one step</li>
-                    <li class="fragment">Not yet supported in Safari</li>
-                </ul>
-            </section>
-            <section>
-                <h2>Methods we won't use</h2>
-                <ul>
-                    <li>compile</li>
-                    <li>compileStreaming</li>
-                    <li>validate</li>
-                </ul>
-            </section>
-        </section>
-        <section>
-            <section>
                 <h2>Handling complex types</h2>
             </section>
             <section>
@@ -102,6 +60,17 @@
             <section>
                 <pre>
                 <code class="hljs rust" data-trim contenteditable data-noescape>
+                    *mut c_char
+                </code>
+                </pre>
+                <ul>
+                    <li>Pointer to a mutable c_char</li>
+                    <li>Representation of C base type</li>
+                </ul>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
                     format!("Hello {}!", "from Rust");
                 </code>
                 </pre>
@@ -122,12 +91,6 @@
                     <li>C-Compatible String</li>
                     <li>nul-terminated</li>
                     <li>No nul bytes in the middle</li>
-                </ul>
-            </section>
-            <section>
-                <h2>c_char</h2>
-                <ul>
-                    <li>Representation of C base type</li>
                 </ul>
             </section>
             <section>
@@ -165,8 +128,7 @@
             <section>
                 <h2>unsafe</h2>
                 <ul>
-                    <li>Usually we only write safe Rust code</li>
-                    <li>Here we read from a arbitrary pointer</li>
+                    <li>We read from an arbitrary pointer</li>
                     <li>No type-safety</li>
                     <li>No memory-safety</li>
                 </ul>
