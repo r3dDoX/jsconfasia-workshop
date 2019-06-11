@@ -112,6 +112,177 @@
             </section>
         </section>
         <section>
+            <section>
+                <h2>Get video stream</h2>
+            </section>
+            <section>
+                <h2>WebRTC</h2>
+                <ul>
+                    <li>Capture audio/video streams</li>
+                    <li>Exchange data between browsers</li>
+                    <li>Basic features in all major browsers</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Get stream</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    navigator.mediaDevices
+                        .getUserMedia({ audio: false, video: true })
+                        .then(stream => {
+                            ...
+                        })
+                        .catch(console.error);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Find width/height</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    const videoTrack = stream.getVideoTracks()[0];
+                    const settings = videoTrack.getSettings();
+
+                    // settings.width / settings.height
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Allow video element to play stream</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    inputVideo.srcObject = stream;
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Exercise Time!</h2>
+                <ul>
+                    <li>Get the stream as mentioned above</li>
+                    <li>Set it on the video element</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Let's add OpenCV to the mix</h2>
+            </section>
+            <section>
+                <h2>VideoCapture</h2>
+                <ul>
+                    <li>OpenCV.js can read from video element</li>
+                    <li>Creating a matrix from the picture</li>
+                    <li>We can then apply OpenCV functions to this matrix</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Setup VideoCapture</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    let cap;
+
+                    function startStreaming() {
+                        ...
+                        cap = new cv.VideoCapture(inputVideo);
+                        ...
+                    }
+                </code>
+                </pre>
+                <p>This is an OpenCV.js specific functionality</p>
+            </section>
+            <section>
+                <h2>Setup output canvas</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    function startStreaming() {
+                        ...
+                        outputCanvas.setAttribute('width', videoWidthPx);
+                        outputCanvas.setAttribute('height', videoHeightPx);
+                        ...
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Setup OpenCV Matrices</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    let src;
+                    let dst;
+
+                    function startStreaming() {
+                        ...
+                        src = new cv.Mat(settings.height, settings.width, cv.CV_8UC4);
+                        dst = new cv.Mat(settings.height, settings.width, cv.CV_8UC1);
+                        ...
+                    }
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>OpenCV Constants</h2>
+                <ul>
+                    <li>cv.CV_8UC4 / cv.CV_8UC1</li>
+                    <li>8U is an 8-bit unsigned integer</li>
+                    <li>C4/C1 stands for the channels</li>
+                    <li>Our source has 4 channels per pixel (RGBA)</li>
+                    <li>Our output will only have 1 channel per pixel</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Create function to process frames</h2>
+                <ol>
+                    <li>Read frame from VideoCapture</li>
+                    <li>Apply OpenCV color transformation</li>
+                    <li>Draw to canvas</li>
+                    <li>Loop</li>
+                </ol>
+            </section>
+            <section>
+                <h2>1. Read frame from VideoCapture</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    cap.read(src);
+                </code>
+                </pre>
+                <p>Read frame and write it to src-matrix</p>
+            </section>
+            <section>
+                <h2>2. Apply OpenCV color transformation</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+                </code>
+                </pre>
+                <p>Transform src- to dst-matrix reducing colors to grayscale</p>
+            </section>
+            <section>
+                <h2>3. Draw to canvas</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    cv.imshow(outputCanvas, dst);
+                </code>
+                </pre>
+                <p>Draw dst-matrix to canvas. This is an OpenCV.js specific functionality.</p>
+            </section>
+            <section>
+                <h2>4. Loop</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    window.requestAnimationFrame(processVideo);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Exercise Time!</h2>
+                <ul>
+                    <li>Initialize matrices and VideoCapture</li>
+                    <li>Create function with draw loop</li>
+                    <li>Call this function after setting up the stream</li>
+                </ul>
+            </section>
+        </section>
+        <section>
             <h2>Resources</h2>
             <ul>
                 <li>
@@ -122,6 +293,11 @@
                 <li>
                     <a href="https://github.com/emscripten-core/emscripten" target="_blank">
                         Emscripten Repo
+                    </a>
+                </li>
+                <li>
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" target="_blank">
+                        WebRTC on MDN
                     </a>
                 </li>
             </ul>
