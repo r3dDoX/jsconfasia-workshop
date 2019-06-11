@@ -296,6 +296,119 @@
             </section>
         </section>
         <section>
+            <section>
+                <h2>Let's do some basic face detection</h2>
+            </section>
+            <section>
+                <h2>How do we detect faces?</h2>
+                <ol>
+                    <li>We need a classifier</li>
+                    <li>Run it over each frame</li>
+                    <li>Get all detected objects</li>
+                    <li>Draw them on the dst-matrix</li>
+                </ol>
+            </section>
+            <section>
+                <h2>Haar Cascade classifier</h2>
+                <ul>
+                    <li>Classifier trained to detect an object</li>
+                    <li>We're not going to train it ourselves</li>
+                    <li>OpenCV provides a pretrained one</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Loading the classifier</h2>
+                <ul>
+                    <li>Load an XML file from the webserver</li>
+                    <li>Create that file in OpenCV</li>
+                    <li>Instantiate Classifier with this file</li>
+                    <li class="fragment">This is already done in the exercise</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Running the classifier</h2>
+                <ul>
+                    <li>The classifier has to be run on a grayscale matrix</li>
+                    <li>Dst-matrix should not be grayscale</li>
+                    <li>We need another copy of the src-matrix</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Create new grayscale matrix</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    gray = new cv.Mat(); // instantiate once
+                    ...
+                    src.copyTo(dst);
+                    cv.cvtColor(dst, gray, cv.COLOR_RGBA2GRAY);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Call classifier</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    faces = new cv.RectVector(); // instantiate once
+                    ...
+                    classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Loop through all faces</h2>
+                <ul>
+                    <li>The vector is now filled with found faces</li>
+                    <li>With JS we can loop over this Vector</li>
+                    <li>Vector has <code>size()</code> and <code>get(i)</code> methods</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Loop through all faces</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    faces = new cv.RectVector(); // instantiate once
+                    ...
+                    classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Draw them on dst-matrix</h2>
+                <ul>
+                    <li>Every face has: <strong>x</strong>, <strong>y</strong>, <strong>width</strong> and <strong>height</strong> properties</li>
+                    <li>To draw a rectangle we need two cv.Point objects</li>
+                    <li>Top left and bottom right</li>
+                    <li><code>cv.rectangle(topLeft, bottomRight, color)</code></li>
+                </ul>
+            </section>
+            <section>
+                <h2>Draw them on dst-matrix</h2>
+                <pre>
+                <code class="hljs js" data-trim contenteditable data-noescape>
+                    let topLeft = new cv.Point(face.x, face.y);
+                    ...
+                    cv.rectangle(dst, topLeft, bottomRight, [255, 0, 0, 255]);
+                </code>
+                </pre>
+            </section>
+            <section>
+                <h2>Scaling</h2>
+                <ul>
+                    <li>We will scale down the input to <strong>320px</strong></li>
+                    <li>Also render it scaled down for the sake of simplicity</li>
+                    <li>You would only scale it down for the algorithm and render it in full scale</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Exercise Time!</h2>
+                <ul>
+                    <li>Checkout branch <strong>exercise/face-detection</strong></li>
+                    <li>Enhance the steps mentioned above</li>
+                    <li>Have fun!</li>
+                </ul>
+            </section>
+        </section>
+        <section>
             <h2>Resources</h2>
             <ul>
                 <li>
