@@ -33,6 +33,83 @@
             <section>
                 <h2>OpenCV</h2>
             </section>
+            <section>
+                <p>
+                    One of the biggest library for real-time omputer vision. Written in C/C++.
+                </p>
+            </section>
+            <section>
+                <h2>OpenCV.js</h2>
+                <p>
+                    OpenCV compiled to asm.js or Webassembly with the help of Emscripten.
+                </p>
+            </section>
+            <section>
+                <h2>Emscripten</h2>
+                <ul>
+                    <li>Comparable to what we did with wasm-bindgen</li>
+                    <li>Glue Code on JS and wasm side</li>
+                    <li>Allows high-level interaction between JS and C/C++</li>
+                </ul>
+            </section>
+        </section>
+        <section>
+            <section>
+                <h2>Let's do some image processing!</h2>
+            </section>
+            <section>
+                <h2>Checkout git repo</h2>
+                <p>
+                    <a href="https://github.com/r3dDoX/wasm-exercise.git" target="_blank">
+                        https://github.com/r3dDoX/wasm-exercise.git
+                    </a>
+                </p>
+            </section>
+            <section>
+                <h2>Setup</h2>
+                <pre>
+                <code class="hljs sh" data-trim contenteditable data-noescape>
+                    npm i
+                    npm start
+                </code>
+                </pre>
+                <p>
+                    Visit: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
+                </a>
+                </p>
+            </section>
+            <section>
+                <p>You should see "<code>runtime ready</code>" in the console after a couple of seconds</p>
+            </section>
+            <section>
+                <h2>Project Structure</h2>
+                <ul>
+                    <li>
+                        bin
+                        <ul>
+                            <li>opencv.js</li>
+                        </ul>
+                    </li>
+                    <li>
+                        index.html
+                    </li>
+                    <li>
+                        main.js
+                    </li>
+                    <li>
+                        ...
+                    </li>
+                </ul>
+            </section>
+            <section>
+                <h2>opencv.js</h2>
+                <ul>
+                    <li>JS bindings</li>
+                    <li>base64 encoded wasm binary</li>
+                    <li>8MB 😬</li>
+                    <li>creates <code>window.cv</code> object</li>
+                </ul>
+            </section>
         </section>
         <section>
             <h2>Resources</h2>
