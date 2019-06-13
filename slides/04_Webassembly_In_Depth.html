@@ -50,9 +50,9 @@
 
                     #[no_mangle]
                     pub extern "C" fn getWelcomeMessage() -> *mut c_char {
-                        let formattedString = format!("Hello {}!", "from Rust");
-                        let s = CString::new(formattedString).unwrap();
-                        s.into_raw()
+                        CString::new("Hello from Rust!")
+                            .unwrap()
+                            .into_raw()
                     }
                 </code>
                 </pre>
@@ -71,20 +71,7 @@
             <section>
                 <pre>
                 <code class="hljs rust" data-trim contenteditable data-noescape>
-                    format!("Hello {}!", "from Rust");
-                </code>
-                </pre>
-                <ul>
-                    <li>Rust Macro</li>
-                    <li>"!"</li>
-                    <li>More flexible than functions</li>
-                    <li>e.g. number of parameters</li>
-                </ul>
-            </section>
-            <section>
-                <pre>
-                <code class="hljs rust" data-trim contenteditable data-noescape>
-                    CString::new(s).unwrap();
+                    CString::new(s)
                 </code>
                 </pre>
                 <ul>
@@ -96,7 +83,8 @@
             <section>
                 <pre>
                 <code class="hljs rust" data-trim contenteditable data-noescape>
-                    s.into_raw()
+                    .unwrap()
+                    .into_raw()
                 </code>
                 </pre>
                 <ul>
@@ -231,6 +219,19 @@
                     }
                 </code>
                 </pre>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    format!("Hello, {}!", name)
+                </code>
+                </pre>
+                <ul>
+                    <li>Rust Macro</li>
+                    <li>"!"</li>
+                    <li>More flexible than functions</li>
+                    <li>e.g. number of parameters</li>
+                </ul>
             </section>
             <section>
                 <pre>
