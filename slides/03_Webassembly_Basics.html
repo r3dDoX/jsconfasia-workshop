@@ -43,11 +43,23 @@
                 <h2>Basic callable function</h2>
                 <pre>
                 <code class="hljs rust" data-trim contenteditable data-noescape>
+                    #[no_mangle]
                     pub extern "C" fn add_one(x: i32) -> i32 {
                         x + 1
                     }
                 </code>
                 </pre>
+            </section>
+            <section>
+                <pre>
+                <code class="hljs rust" data-trim contenteditable data-noescape>
+                    #[no_mangle]
+                </code>
+                </pre>
+                <ul>
+                    <li>Prevent compiler to remove function</li>
+                    <li>Prevent compiler from renaming function</li>
+                </ul>
             </section>
             <section>
                 <pre>
