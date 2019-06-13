@@ -50,8 +50,8 @@
 
                     #[no_mangle]
                     pub extern "C" fn getWelcomeMessage() -> *mut c_char {
-                        let s = format!("Hello {}!", "from Rust");
-                        let s = CString::new(s).unwrap();
+                        let formattedString = format!("Hello {}!", "from Rust");
+                        let s = CString::new(formattedString).unwrap();
                         s.into_raw()
                     }
                 </code>
@@ -137,7 +137,7 @@
                 <h2>JavaScript</h2>
                 <pre>
                 <code class="hljs js" data-trim contenteditable data-noescape>
-                    const module = result.instance.exports;
+                    const module = results.instance.exports;
                     let pointer = module.getWelcomeMessage();
                     let message = copyCStr(module, pointer);
                     document.getElementById("container").textContent = message;
