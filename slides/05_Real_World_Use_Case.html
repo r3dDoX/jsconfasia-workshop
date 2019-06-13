@@ -75,11 +75,12 @@
                 </pre>
                 <p>
                     Visit: <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>
-                </a>
+                    </a>
                 </p>
             </section>
             <section>
-                <p>You should see "<code>runtime ready</code>" in the browser console after a couple of seconds</p>
+                <p>You should see "<code>runtime ready</code>" in the browser console after a couple
+                    of seconds</p>
             </section>
             <section>
                 <h2>Project Structure</h2>
@@ -376,7 +377,9 @@
             <section>
                 <h2>Draw them on dst-matrix</h2>
                 <ul>
-                    <li>Every face has: <strong>x</strong>, <strong>y</strong>, <strong>width</strong> and <strong>height</strong> properties</li>
+                    <li>Every face has: <strong>x</strong>, <strong>y</strong>,
+                        <strong>width</strong> and <strong>height</strong> properties
+                    </li>
                     <li>To draw a rectangle we need two cv.Point objects</li>
                     <li>Top left and bottom right</li>
                     <li><code>cv.rectangle(topLeft, bottomRight, color)</code></li>
@@ -397,7 +400,8 @@
                 <ul>
                     <li>We will scale down the input to <strong>320px</strong></li>
                     <li>Also render it scaled down for the sake of simplicity</li>
-                    <li>You would only scale it down for the algorithm and render it in full scale</li>
+                    <li>You would only scale it down for the algorithm and render it in full scale
+                    </li>
                 </ul>
             </section>
             <section>
@@ -412,6 +416,21 @@
                         </a>
                     </li>
                 </ul>
+            </section>
+        </section>
+        <section>
+            <h2>Performance comparison</h2>
+            <figure>
+                <img src="../img/websight.gif">
+                <figcaption>Comparison by WebSight</figcaption>
+            </figure>
+        </section>
+        <section>
+            <section>
+                <h2>To round it up</h2>
+            </section>
+            <section>
+                <p>Use it for heavy tasks! Not minor optimizations</p>
             </section>
         </section>
         <section>
@@ -433,13 +452,21 @@
                     </a>
                 </li>
                 <li>
-                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API" target="_blank">
+                    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API"
+                       target="_blank">
                         WebRTC on MDN
                     </a>
                 </li>
                 <li>
-                    <a href="https://github.com/opencv/opencv/blob/master/samples/dnn/js_face_recognition.html" target="_blank">
-                        Face Recognition example with dnn
+                    <a href="https://github.com/opencv/opencv/blob/master/samples/dnn/js_face_recognition.html"
+                       target="_blank">
+                        Face recognition example with dnn
+                    </a>
+                </li>
+                <li>
+                    <a href="https://hacks.mozilla.org/2017/09/bootcamps-webassembly-and-computer-vision/"
+                       target="_blank">
+                        Face detection comparison by WebSight
                     </a>
                 </li>
             </ul>
